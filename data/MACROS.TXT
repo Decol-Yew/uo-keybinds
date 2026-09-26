@@ -1,0 +1,203 @@
+C 0 1 0
+War/Peace 
+########
+P 1 1 0
+Open Paperdoll
+########
+K 1 1 0
+Open Skills
+########
+J 1 1 0
+Open Journal
+########
+I 1 1 0
+Open Backpack
+########
+R 1 1 0
+Open Overview
+########
+O 1 1 0
+Open Configuration
+########
+X 1 1 0
+QuitGame 
+########
+B 1 1 0
+Bow 
+########
+S 1 1 0
+Salute 
+########
+Num 8 1 1 0
+Say Forward
+########
+Num 5 1 1 0
+Say Stop
+########
+Num 4 1 1 0
+Say Turn Left
+########
+Num 6 1 1 0
+Say Turn Right
+########
+Num 7 1 1 0
+Say Left
+########
+Num 9 1 1 0
+Say Right
+########
+Num 2 1 1 0
+Say Backwards
+########
+Num 1 1 1 0
+Say Raise Anchor
+########
+Num 3 1 1 0
+Say Drop Anchor
+########
+Esc 0 0 1
+Yell Guards!!!
+Say i ban thee
+########
+F1 0 0 0
+Say vendor buy
+########
+F2 0 0 0
+Say vendor sell
+########
+F3 0 0 0
+Say bank
+########
+F5 0 0 0
+LastObject 
+########
+F8 0 0 0
+AllNames 
+OpenDoor 
+########
+F11 0 0 0
+Say kaladim stay
+########
+F12 0 0 0
+Say horse follow me
+########
+R 1 0 0
+CastSpell Recall
+########
+H 1 0 0
+CastSpell Greater Heal
+########
+C 1 0 0
+CastSpell Cure
+########
+A 1 0 0
+CastSpell Arch Protection
+########
+T 1 0 0
+CastSpell Teleport
+########
+Y 1 0 0
+CastSpell Telekinesis
+########
+D 1 0 0
+CastSpell Dispel
+########
+Z 1 0 0
+CastSpell Resurrection
+########
+N 1 0 0
+CastSpell Night Sight
+########
+I 1 0 0
+CastSpell Invisibility
+########
+Backspace 1 0 0
+CastSpell Blade Spirits
+########
+U 1 0 0
+CastSpell Unlock
+########
+M 1 0 0
+CastSpell Mind Blast
+########
+G 1 0 0
+CastSpell Gate Travel
+########
+H 0 1 0
+UseSkill Hiding
+########
+S 0 1 0
+UseSkill Stealing
+########
+P 0 1 0
+UseSkill Peacemaking
+########
+T 0 1 0
+UseSkill Animal Taming
+########
+R 0 1 0
+UseSkill Animal Lore
+########
+W 1 0 0
+CastSpell Wall of Stone
+########
+D 0 1 0
+UseSkill Detecting Hidden
+########
+S 1 0 0
+CastSpell Flame Strike
+########
+X 1 0 0
+CastSpell Explosion
+########
+E 1 0 0
+CastSpell Energy Bolt
+########
+F 1 0 0
+CastSpell Fire Field
+########
+; 0 1 0
+UseSkill Provocation
+########
+B 1 0 0
+CastSpell Bless
+########
+Q 1 0 0
+CastSpell Energy Field
+########
+P 1 0 0
+CastSpell Poison Field
+########
+L 1 0 0
+CastSpell Paralyze
+########
+; 1 0 0
+CastSpell Paralyze Field
+########
+M 0 1 0
+UseSkill Alchemy
+########
+B 0 1 0
+UseSkill Begging
+########
+A 0 1 0
+UseSkill Arms Lore
+########
+E 0 1 0
+UseSkill Evaluating Intelligence
+########
+I 0 1 0
+UseSkill Item Identification
+########
+F9 0 0 0
+Say bear attack
+########
+F10 0 0 0
+Say cougar attack
+########
+Y 0 1 0
+UseSkill Tracking
+########
+U 0 1 0
+UseSkill Inscription
+########
