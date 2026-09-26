@@ -65,6 +65,13 @@ select{cursor:pointer}
 .btn-primary{background:linear-gradient(180deg,#5b4526,#3d2c14);border-color:var(--gold)}
 .btn-danger:hover{border-color:#d76b7f;color:#e79aa8}
 
+/* status bar */
+.statusbar{max-width:960px;margin:10px auto 0;padding:8px 14px;border-radius:8px;
+  font-size:.8rem;text-align:center;border:1px solid var(--line);background:var(--panel)}
+.statusbar.ok{color:#8fce9e;border-color:#3d5a44;background:rgba(91,189,134,.08)}
+.statusbar.draft{color:#e6c46a;border-color:#6a5320;background:rgba(220,171,76,.10)}
+.statusbar.warn{color:#e79aa8;border-color:#6a3540;background:rgba(215,107,127,.10)}
+
 /* layer selector */
 .layers{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:6px 0 14px}
 .layer-btn{position:relative;padding:7px 14px;font-size:.9rem;border-radius:7px}
@@ -226,16 +233,19 @@ a{color:var(--gold)}
     </div>
     <div class="group">
       <span class="lbl">データ</span>
-      <button id="export-btn">JSON書出</button>
+      <button id="pull-btn" title="リポジトリの最新データを取得(この端末の下書きは破棄)">リポジトリ最新</button>
+      <button id="export-btn" class="btn-primary" title="編集内容を keybinds.json として書き出し(data/ にコミットで全端末へ反映)">JSON書出</button>
       <button id="import-btn">読込</button>
       <input type="file" id="import-file" accept="application/json,.json" style="display:none">
       <button id="print-btn">印刷</button>
     </div>
     <div class="group">
       <button id="swap-btn" title="Ctrl と Alt の割り当てを全件入れ替え(取り込み時の解釈が逆だった場合)">Ctrl↔Alt</button>
-      <button id="reset-btn" class="btn-danger" title="取り込んだ既定データに戻す">初期化</button>
+      <button id="reset-btn" class="btn-danger" title="取り込み時の既定データ(元のMACROS.TXT)に戻す">既定に戻す</button>
     </div>
   </div>
+
+  <div class="statusbar" id="statusbar"></div>
 
   <div class="layers" id="layers"></div>
 
@@ -319,8 +329,10 @@ a{color:var(--gold)}
 <script id="default-data" type="application/json">__DEFAULT_DATA__</script>
 <script>
 "use strict";
-const DEFAULT_DATA = JSON.parse(document.getElementById('default-data').textContent);
-const STORAGE_KEY = 'uo-keybinds:v1';
+const EMBEDDED_DEFAULT = JSON.parse(document.getElementById('default-data').textContent);
+const DATA_URL = 'data/keybinds.json';         // live shared data (commit this to sync all devices)
+const DEFAULT_URL = 'data/keybinds.default.json'; // original import (never edited)
+const DRAFT_KEY = 'uo-keybinds:draft';          // per-device uncommitted edits
 const MODS = ['ctrl','alt','shift'];
 const CAT_LABEL = {spell:'詠唱',skill:'スキル',say:'発話',command:'操作',uoassist:'UOAssist',other:'その他'};
 const CAT_ORDER = ['spell','skill','say','command','uoassist','other'];
@@ -358,23 +370,65 @@ const NUMPAD = [
 ];
 
 /* ---- state ---- */
-let state = load();
+let state = deepClone(EMBEDDED_DEFAULT);
+let repoData = null;      // last data fetched from the repository
+let hasDraft = false;     // this device has uncommitted edits
+let offline = false;      // repository data could not be fetched
 let layout = localStorage.getItem('uo-keybinds:layout') || 'JIS';
 let curLayer = {ctrl:false,alt:false,shift:false};
 let sortKey = 'combo', sortDir = 1;
 let editing = null; // {index} or {key,mods} for new
 
-function load(){
-  try{
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if(raw) return JSON.parse(raw);
-  }catch(e){}
-  return deepClone(DEFAULT_DATA);
-}
-function save(){
-  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
-}
 function deepClone(o){ return JSON.parse(JSON.stringify(o)); }
+
+async function fetchJSON(url){
+  try{
+    const res = await fetch(url + '?t=' + Date.now(), {cache:'no-store'});
+    if(!res.ok) return null;
+    const d = await res.json();
+    if(!d || !Array.isArray(d.bindings)) return null;
+    return d;
+  }catch(e){ return null; }
+}
+function loadDraft(){ try{const r=localStorage.getItem(DRAFT_KEY); if(r) return JSON.parse(r);}catch(e){} return null; }
+function saveDraft(){ try{localStorage.setItem(DRAFT_KEY, JSON.stringify(state));}catch(e){} hasDraft=true; updateBanner(); }
+function clearDraft(){ try{localStorage.removeItem(DRAFT_KEY);}catch(e){} hasDraft=false; }
+
+async function init(){
+  repoData = await fetchJSON(DATA_URL) || await fetchJSON(DEFAULT_URL);
+  offline = !repoData;
+  const draft = loadDraft();
+  if(draft && Array.isArray(draft.bindings)){ state = draft; hasDraft = true; }
+  else if(repoData){ state = deepClone(repoData); hasDraft = false; }
+  else { state = deepClone(EMBEDDED_DEFAULT); hasDraft = false; }
+  updateBanner();
+  renderAll();
+}
+
+function updateBanner(){
+  const el = document.getElementById('statusbar'); if(!el) return;
+  let msg, cls;
+  if(offline){
+    cls='warn';
+    msg='オフライン表示: リポジトリのデータを読み込めません(ローカルで開いている/Pages未公開など)。'
+      + (hasDraft?'この端末の下書き':'埋め込みの初期データ') + 'を表示中。編集はこの端末にのみ保存されます。';
+  }else if(hasDraft){
+    cls='draft';
+    msg='未コミットの下書きを表示中(この端末のみ)。全端末へ反映するには「JSON書出」→ data/keybinds.json にコミットしてください。';
+  }else{
+    cls='ok';
+    msg='リポジトリの最新を表示中。どの端末で開いても同じ内容です。';
+  }
+  el.className='statusbar '+cls; el.textContent=msg;
+}
+
+async function pullLatest(){
+  if(hasDraft && !confirm('この端末の下書きを破棄して、リポジトリの最新を取得します。よろしいですか?')) return;
+  const d = await fetchJSON(DATA_URL) || await fetchJSON(DEFAULT_URL);
+  if(!d){ toast('リポジトリのデータを取得できませんでした'); return; }
+  repoData = d; state = deepClone(d); clearDraft(); offline=false;
+  updateBanner(); renderAll(); toast('リポジトリ最新を取得しました');
+}
 
 /* ---- helpers ---- */
 function modsEqual(a,b){ return MODS.every(m => !!a[m] === !!b[m]); }
@@ -589,12 +643,12 @@ function saveEditor(){
   }else{
     state.bindings.push({key:editing.key,mods:{...editing.mods},actions,category:cat,source:src,note});
   }
-  save(); closeEditor(); renderAll(); toast('保存しました');
+  saveDraft(); closeEditor(); renderAll(); toast('保存しました(この端末の下書き)');
 }
 function deleteEditor(){
   if(editing.index!==undefined){
     state.bindings.splice(editing.index,1);
-    save(); closeEditor(); renderAll(); toast('削除しました');
+    saveDraft(); closeEditor(); renderAll(); toast('削除しました(この端末の下書き)');
   }else closeEditor();
 }
 
@@ -605,9 +659,9 @@ function exportJSON(){
   const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
   const a=document.createElement('a');
   a.href=URL.createObjectURL(blob);
-  a.download='uo-keybinds.json';
+  a.download='keybinds.json';
   a.click(); URL.revokeObjectURL(a.href);
-  toast('JSONを書き出しました');
+  toast('keybinds.json を書き出しました。data/ に置いてコミットすると全端末に反映されます');
 }
 function importJSON(file){
   const r=new FileReader();
@@ -615,7 +669,7 @@ function importJSON(file){
     try{
       const d=JSON.parse(r.result);
       if(!d.bindings||!Array.isArray(d.bindings)) throw new Error('bindings がありません');
-      state=d; save(); renderAll(); toast('読み込みました('+d.bindings.length+'件)');
+      state=d; saveDraft(); renderAll(); toast('読み込みました('+d.bindings.length+'件・この端末の下書き)');
     }catch(e){ toast('読み込み失敗: '+e.message); }
   };
   r.readAsText(file);
@@ -623,11 +677,12 @@ function importJSON(file){
 function swapCtrlAlt(){
   if(!confirm('全ての割り当てで Ctrl と Alt を入れ替えます。よろしいですか?')) return;
   state.bindings.forEach(b=>{ const t=b.mods.ctrl; b.mods.ctrl=b.mods.alt; b.mods.alt=t; });
-  save(); renderAll(); toast('Ctrl と Alt を入れ替えました');
+  saveDraft(); renderAll(); toast('Ctrl と Alt を入れ替えました(下書き)');
 }
-function resetData(){
-  if(!confirm('取り込んだ既定データに戻します。現在の編集内容は失われます。よろしいですか?')) return;
-  state=deepClone(DEFAULT_DATA); save(); renderAll(); toast('初期化しました');
+async function resetToSeed(){
+  if(!confirm('取り込み時の既定データ(元のMACROS.TXT)に戻します。現在の内容は上書きされます(この端末の下書きになります)。よろしいですか?')) return;
+  const d = await fetchJSON(DEFAULT_URL) || EMBEDDED_DEFAULT;
+  state=deepClone(d); saveDraft(); renderAll(); toast('既定データに戻しました(下書き)');
 }
 
 /* ---- misc ---- */
@@ -652,12 +707,13 @@ document.getElementById('search').oninput=renderTable;
 document.getElementById('filter-cat').onchange=renderTable;
 document.getElementById('filter-src').onchange=renderTable;
 document.getElementById('add-btn').onclick=()=>openEditor('',{...curLayer});
+document.getElementById('pull-btn').onclick=pullLatest;
 document.getElementById('export-btn').onclick=exportJSON;
 document.getElementById('import-btn').onclick=()=>document.getElementById('import-file').click();
 document.getElementById('import-file').onchange=function(){ if(this.files[0]) importJSON(this.files[0]); this.value=''; };
 document.getElementById('print-btn').onclick=()=>window.print();
 document.getElementById('swap-btn').onclick=swapCtrlAlt;
-document.getElementById('reset-btn').onclick=resetData;
+document.getElementById('reset-btn').onclick=resetToSeed;
 document.getElementById('f-save').onclick=saveEditor;
 document.getElementById('f-cancel').onclick=closeEditor;
 document.getElementById('f-delete').onclick=deleteEditor;
@@ -667,7 +723,7 @@ document.querySelectorAll('th[data-sort]').forEach(th=>{
   th.onclick=()=>{ const k=th.dataset.sort; if(sortKey===k) sortDir*=-1; else {sortKey=k;sortDir=1;} renderTable(); };
 });
 
-renderAll();
+init();
 </script>
 </body>
 </html>
@@ -681,6 +737,12 @@ def main():
     payload = payload.replace("</", "<\\/")
     html = TEMPLATE.replace("__DEFAULT_DATA__", payload)
     OUT.write_text(html, encoding="utf-8")
+    # Seed the live shared file the page loads (keybinds.json) from the default,
+    # but never clobber it once it exists (it holds committed edits).
+    live = ROOT / "data" / "keybinds.json"
+    if not live.exists():
+        live.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print(f"seeded {live}")
     print(f"wrote {OUT} ({len(html)} bytes, {len(data['bindings'])} bindings)")
 
 
