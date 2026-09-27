@@ -7,7 +7,8 @@
       "alt",
       "shift"
     ],
-    "generated": "2026-09-26"
+    "generated": "2026-09-26",
+    "exported": "2026-09-27"
   },
   "bindings": [
     {
@@ -882,6 +883,146 @@
       ],
       "category": "skill",
       "source": "client"
+    },
+    {
+      "key": "1",
+      "mods": {
+        "ctrl": true,
+        "alt": false,
+        "shift": false
+      },
+      "actions": [
+        "綿花採集:記録 東隣の花（種類A ）"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "2",
+      "mods": {
+        "ctrl": true,
+        "alt": false,
+        "shift": false
+      },
+      "actions": [
+        "綿花採集:記録 東隣の花（向き B）"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "3",
+      "mods": {
+        "ctrl": true,
+        "alt": false,
+        "shift": false
+      },
+      "actions": [
+        "綿花採集:記録 東隣の花（種類C ）"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "4",
+      "mods": {
+        "ctrl": true,
+        "alt": false,
+        "shift": false
+      },
+      "actions": [
+        "綿花採集:記録 東隣の花（種類D）"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "5",
+      "mods": {
+        "ctrl": true,
+        "alt": false,
+        "shift": false
+      },
+      "actions": [
+        "綿花採集:記録 南隣の花"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "6",
+      "mods": {
+        "ctrl": true,
+        "alt": false,
+        "shift": false
+      },
+      "actions": [
+        "綿花採集:記録 東隣の綿花アイテム"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "7",
+      "mods": {
+        "ctrl": true,
+        "alt": false,
+        "shift": false
+      },
+      "actions": [
+        "綿花採集:記録 ドロップ先"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "8",
+      "mods": {
+        "ctrl": true,
+        "alt": false,
+        "shift": false
+      },
+      "actions": [
+        "綿花採集:記録 マウスの退避位置"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "9",
+      "mods": {
+        "ctrl": true,
+        "alt": false,
+        "shift": false
+      },
+      "actions": [
+        "綿花採集:記録 自キャラの範囲（左上 ）"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "0",
+      "mods": {
+        "ctrl": true,
+        "alt": false,
+        "shift": false
+      },
+      "actions": [
+        "綿花採集:記録 自キャラの範囲（ 右下）"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
     }
   ]
 }
