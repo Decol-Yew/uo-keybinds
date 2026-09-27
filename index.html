@@ -99,9 +99,15 @@ select{cursor:pointer}
 /* colored left bar by category */
 .key.assigned::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;
   background:var(--cat,transparent)}
-/* dot: has binding in other layers */
-.key .other{position:absolute;top:3px;right:4px;display:flex;gap:2px}
-.key .other i{width:5px;height:5px;border-radius:50%;background:var(--od,#7a6a48);opacity:.85}
+/* top-right meta cluster: source badge + other-layer dots */
+.key .keymeta{position:absolute;top:3px;right:3px;display:flex;flex-direction:column;
+  align-items:flex-end;gap:2px;pointer-events:none}
+.key .dots{display:flex;gap:2px}
+.key .dots i{width:5px;height:5px;border-radius:50%;background:var(--od,#7a6a48);opacity:.85}
+.key .srcbadge{font-family:var(--serif-en);font-size:.5rem;line-height:1.25;padding:0 3px;
+  border-radius:4px;border:1px solid;letter-spacing:.03em;font-weight:600}
+.key .sb-uoassist{color:var(--c-uoassist);border-color:var(--c-uoassist);background:rgba(215,107,127,.16)}
+.key .sb-ahk{color:var(--c-ahk);border-color:var(--c-ahk);background:rgba(110,168,255,.16)}
 
 .cat-spell{--cat:var(--c-spell)} .cat-skill{--cat:var(--c-skill)}
 .cat-say{--cat:var(--c-say)} .cat-command{--cat:var(--c-command)}
@@ -242,7 +248,7 @@ a{color:var(--gold)}
   </div>
 
   <div class="legend" id="legend"></div>
-  <div class="hint">キーをクリックすると、現在のレイヤー(修飾キー)での割り当てを編集できます。修飾キー(Ctrl/Alt/Shift)を押すとレイヤーが切り替わります。右上の点は「他のレイヤーにも割り当てあり」の印です。</div>
+  <div class="hint">キーをクリックすると、現在のレイヤー(修飾キー)での割り当てを編集できます。修飾キー(Ctrl/Alt/Shift)を押すとレイヤーが切り替わります。右上の点は「他のレイヤーにも割り当てあり」の印、小バッジは系統(UA=UOAssist / AHK)です。</div>
 
   <div class="stats" id="stats"></div>
 
@@ -326,6 +332,7 @@ const MODS = ['ctrl','alt','shift'];
 const CAT_LABEL = {spell:'詠唱',skill:'スキル',say:'発話',command:'操作',uoassist:'UOAssist',other:'その他'};
 const CAT_ORDER = ['spell','skill','say','command','uoassist','other'];
 const SRC_LABEL = {client:'Client',uoassist:'UOAssist',ahk:'AHK'};
+const SRC_BADGE = {uoassist:'UA',ahk:'AHK'}; // short label shown on keys (client omitted)
 
 /* ---- keyboard layouts ---- */
 // item: [code, face, width]  |  {mod:'ctrl'|'alt'|'shift', face, w}  |  {sp:w} spacer
@@ -499,18 +506,24 @@ function buildRow(items){
     k.className='key'; k.style.setProperty('--w',w||1);
     const idx=findBinding(code,curLayer);
     let inner='<span class="face">'+escapeHtml(face)+'</span>';
+    let srcBadge='';
     if(idx>=0){
       const b=state.bindings[idx];
       k.classList.add('assigned','cat-'+b.category);
       if(isConflict(idx)) k.classList.add('conflict');
       inner+='<span class="val">'+escapeHtml(shortActions(b.actions))+'</span>';
+      const src=b.source||'client';
+      if(SRC_BADGE[src]) srcBadge='<span class="srcbadge sb-'+src+'">'+SRC_BADGE[src]+'</span>';
     }
     const others=bindingsForKeyOtherLayers(code);
+    let dots='';
     if(others.length){
-      const seen=new Set(); let dots='';
+      const seen=new Set();
       others.forEach(o=>{ if(!seen.has(o.category)){seen.add(o.category);
         dots+='<i style="--od:var(--c-'+o.category+')"></i>';}});
-      inner+='<span class="other">'+dots+'</span>';
+    }
+    if(srcBadge || dots){
+      inner+='<span class="keymeta">'+srcBadge+(dots?'<span class="dots">'+dots+'</span>':'')+'</span>';
     }
     k.innerHTML=inner;
     k.onclick=()=>openEditor(code,curLayer);
