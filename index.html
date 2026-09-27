@@ -16,6 +16,8 @@
   /* category colors */
   --c-spell:#8f7bff; --c-skill:#5bbd86; --c-say:#dcab4c; --c-command:#59b0d1;
   --c-uoassist:#d76b7f; --c-other:#9a8f7a;
+  /* source colors */
+  --c-ahk:#6ea8ff;
 }
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%}
@@ -131,6 +133,7 @@ td.actions-cell{color:#efe4c4}
   border:1px solid var(--cat,var(--line));color:var(--cat,var(--text-dim));white-space:nowrap}
 .src{font-size:.7rem;color:var(--text-faint)}
 .src.uoassist{color:var(--c-uoassist)}
+.src.ahk{color:var(--c-ahk)}
 .row-actions button{padding:3px 8px;font-size:.72rem}
 tr.conflict td{background:rgba(215,107,127,.10)}
 .note-cell{color:var(--text-dim);font-size:.78rem;font-style:italic}
@@ -210,6 +213,7 @@ a{color:var(--gold)}
         <option value="">系統すべて</option>
         <option value="client">UOクライアント</option>
         <option value="uoassist">UOAssist</option>
+        <option value="ahk">AutoHotkey</option>
       </select>
     </div>
     <div class="group">
@@ -293,6 +297,7 @@ a{color:var(--gold)}
       <select id="f-src">
         <option value="client">UOクライアント</option>
         <option value="uoassist">UOAssist</option>
+        <option value="ahk">AutoHotkey (AHK)</option>
       </select>
     </div>
     <div class="field">
@@ -320,6 +325,7 @@ const DRAFT_KEY = 'uo-keybinds:draft';          // per-device uncommitted edits
 const MODS = ['ctrl','alt','shift'];
 const CAT_LABEL = {spell:'詠唱',skill:'スキル',say:'発話',command:'操作',uoassist:'UOAssist',other:'その他'};
 const CAT_ORDER = ['spell','skill','say','command','uoassist','other'];
+const SRC_LABEL = {client:'Client',uoassist:'UOAssist',ahk:'AHK'};
 
 /* ---- keyboard layouts ---- */
 // item: [code, face, width]  |  {mod:'ctrl'|'alt'|'shift', face, w}  |  {sp:w} spacer
@@ -572,7 +578,7 @@ function renderTable(){
       '<td class="combo">'+escapeHtml(comboString(b.key,b.mods))+'</td>'+
       '<td>'+escapeHtml(b.key)+'</td>'+
       '<td><span class="badge cat-'+b.category+'" style="--cat:var(--c-'+b.category+')">'+CAT_LABEL[b.category]+'</span></td>'+
-      '<td><span class="src '+(src==='uoassist'?'uoassist':'')+'">'+(src==='uoassist'?'UOAssist':'Client')+'</span></td>'+
+      '<td><span class="src '+src+'">'+(SRC_LABEL[src]||src)+'</span></td>'+
       '<td class="actions-cell">'+escapeHtml((b.actions||[]).join(' / '))+'</td>'+
       '<td class="note-cell">'+escapeHtml(b.note||'')+'</td>'+
       '<td class="row-actions"><button data-edit="'+i+'">編集</button></td>';
