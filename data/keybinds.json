@@ -1249,8 +1249,8 @@
       "key": "F12",
       "mods": {
         "ctrl": true,
-        "alt": false,
-        "shift": false
+        "alt": true,
+        "shift": true
       },
       "actions": [
         "綿花アシスト: 診断"
