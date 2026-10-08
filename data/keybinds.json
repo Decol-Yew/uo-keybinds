@@ -1090,6 +1090,244 @@
       "category": "command",
       "source": "uoassist",
       "note": ""
+    },
+    {
+      "key": "F2",
+      "mods": {
+        "ctrl": true,
+        "alt": false,
+        "shift": false
+      },
+      "actions": [
+        "売却アシスト: 売却ループ開始 (vendor_sell.ahk)"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "F2",
+      "mods": {
+        "ctrl": true,
+        "alt": false,
+        "shift": true
+      },
+      "actions": [
+        "売却アシスト: 停止"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "1",
+      "mods": {
+        "ctrl": true,
+        "alt": true,
+        "shift": false
+      },
+      "actions": [
+        "売却アシスト: キャリブレーション 品物の欄1"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "2",
+      "mods": {
+        "ctrl": true,
+        "alt": true,
+        "shift": false
+      },
+      "actions": [
+        "売却アシスト: キャリブレーション 品物の欄2"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "3",
+      "mods": {
+        "ctrl": true,
+        "alt": true,
+        "shift": false
+      },
+      "actions": [
+        "売却アシスト: キャリブレーション 品物の欄3"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "4",
+      "mods": {
+        "ctrl": true,
+        "alt": true,
+        "shift": false
+      },
+      "actions": [
+        "売却アシスト: キャリブレーション スクロールダウン"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "5",
+      "mods": {
+        "ctrl": true,
+        "alt": true,
+        "shift": false
+      },
+      "actions": [
+        "売却アシスト: キャリブレーション 確定ボタン"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "6",
+      "mods": {
+        "ctrl": true,
+        "alt": true,
+        "shift": false
+      },
+      "actions": [
+        "売却アシスト: キャリブレーション 判定位置マーカー"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "F9",
+      "mods": {
+        "ctrl": true,
+        "alt": false,
+        "shift": false
+      },
+      "actions": [
+        "綿花アシスト: 採取実行 (cotton.ahk)"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "F9",
+      "mods": {
+        "ctrl": true,
+        "alt": false,
+        "shift": true
+      },
+      "actions": [
+        "綿花アシスト: 判定位置プレビュー"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "F9",
+      "mods": {
+        "ctrl": false,
+        "alt": false,
+        "shift": true
+      },
+      "actions": [
+        "綿花アシスト: 停止"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "F12",
+      "mods": {
+        "ctrl": true,
+        "alt": false,
+        "shift": false
+      },
+      "actions": [
+        "綿花アシスト: 診断"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "^",
+      "mods": {
+        "ctrl": true,
+        "alt": false,
+        "shift": false
+      },
+      "actions": [
+        "スキル反復マクロ: ON/OFF (uo_skill_macro.ahk)"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "-",
+      "mods": {
+        "ctrl": true,
+        "alt": false,
+        "shift": false
+      },
+      "actions": [
+        "スキル反復マクロ: 設定ウィンドウを開く"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "@",
+      "mods": {
+        "ctrl": true,
+        "alt": false,
+        "shift": false
+      },
+      "actions": [
+        "スキル反復マクロ: ターゲット座標を取得"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "[",
+      "mods": {
+        "ctrl": true,
+        "alt": false,
+        "shift": false
+      },
+      "actions": [
+        "スキル反復マクロ: ターゲット診断"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "\\",
+      "mods": {
+        "ctrl": true,
+        "alt": false,
+        "shift": false
+      },
+      "actions": [
+        "スキル反復マクロ: 終了"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
     }
   ]
 }
