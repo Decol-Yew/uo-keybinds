@@ -1328,6 +1328,48 @@
       "category": "other",
       "source": "ahk",
       "note": ""
+    },
+    {
+      "key": "-",
+      "mods": {
+        "ctrl": true,
+        "alt": true,
+        "shift": true
+      },
+      "actions": [
+        "秘薬袋: 基準点登録 (reagents_bag.ahk)"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "^",
+      "mods": {
+        "ctrl": true,
+        "alt": true,
+        "shift": true
+      },
+      "actions": [
+        "秘薬袋: 実行"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
+    },
+    {
+      "key": "\\",
+      "mods": {
+        "ctrl": true,
+        "alt": true,
+        "shift": true
+      },
+      "actions": [
+        "秘薬袋: 緊急停止 (Reload)"
+      ],
+      "category": "other",
+      "source": "ahk",
+      "note": ""
     }
   ]
 }
